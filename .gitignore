@@ -289,3 +289,4 @@ __pycache__/
 *.config
 /ngFlowchart.sln
 /bundleconfig.json
+/demo/bower_components
