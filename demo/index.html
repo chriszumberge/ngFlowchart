@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <title>ngFlowchart Demo</title>
+	<meta charset="utf-8" />
+    <!-- Necessary javascript packages -->
+    <script src="bower_components/jquery/jquery.min.js"></script>
+    <script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
+
+    <script src="bower_components/jquery.panzoom/dist/jquery.panzoom.min.js"></script>
+    <script src="bower_components/jquery-mousewheel/jquery.mousewheel.min.js"></script>
+
+    <script src="bower_components/jquery.flowchart/jquery.flowchart.min.js"></script>
+    
+    <script src="bower_components/angular/angular.min.js"></script>
+
+    <script src="ngFlowchart/ngFlowchart.min.js"></script>
+
+    <!-- Flowchart styles -->
+    <link href="bower_components/jquery.flowchart/jquery.flowchart.min.css" rel="stylesheet" />
+    <link href="ngFlowchart/ngFlowchart.min.css" rel="stylesheet" />
+
+    <!-- Angular Helper and Styling Packages to include Angular Material (ONLY used for demo layout, not necessary) -->
+    <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.min.js"></script>
+    <script src="bower_components/angular-material/angular-material.min.js"></script>
+    <script src="bower_components/angular-messages/angular-messages.min.js"></script>
+    <link href="bower_components/angular-material/angular-material.min.css" rel="stylesheet" />
+    <!--  -->
+
+    <!-- Any ad hoc js or styles just for the demo -->
+    <script src="demo.js"></script>
+    <link href="demo.css" rel="stylesheet" />
+    <!-- Angular Application -->
+    <script src="app.js"></script>
+    <!-- Flowchart Seed Data (if initializing with data) -->
+    <script src="data.js"></script>
+</head>
+<body ng-controller="main" ng-cloak>
+    <section layout="row" flex style="min-height: 100vh;">
+        <md-sidenav class="md-sidenav-left" md-component-id="left" md-is-locked-open="true" md-whiteframe="4">
+            <md-toolbar>
+                <h1 class="md-toolbar-tools">Toolbox</h1>
+            </md-toolbar>
+            <md-content layout="column">
+                <md-button class="md-raised" ng-click="deleteSelected()">Delete Selected</md-button>
+                <md-button class="md-raised" ng-click="logSelectedId()">Log Selected Id</md-button>
+                <md-button class="md-raised" ng-click="addOperator()">Add Operator</md-button>
+                <md-button class="md-raised" ng-click="logData()">Log Flow Chart Data</md-button>
+            </md-content>
+        </md-sidenav>
+        <md-content flex class="ng-flowchart-container">
+            <ng-flowchart on-operator-moved="operatorMoved"></ng-flowchart>
+        </md-content>
+    </section>
+</body>
+</html>
