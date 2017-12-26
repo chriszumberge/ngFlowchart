@@ -1,4 +1,4 @@
-// Define the angular module
+﻿// Define the angular module
 angular.module("ngFlowchart", [])
     // Define the ngFlowchartServiceProvider- the provider is used to define and configure the Flowchart canvas
     .provider("ngFlowchartService", [function () {
@@ -19,6 +19,8 @@ angular.module("ngFlowchart", [])
             defaultNewTop: 60,
             defaultNewLeft: 60,
         };
+
+        // ALWAYS RETURN THIS SO THE CONFIGURATION CAN BE FLUENT
 
         // Create public provider configuration methods
         this.setOptions = function (options) {
@@ -141,7 +143,27 @@ angular.module("ngFlowchart", [])
             };
 
             // OPERATOR FUNCTIONS
-            // Adds the operator to the flowchart at the designed top/left values or default if not provided
+
+            // TODO, WHY is this different from the jquery.flowchart api?
+            // The language makes it seem weird but it's better to conform when matching function names exactly
+
+            // Adds the operator to the flowchart at the designated top/left values or default if not provided, also allows
+            // the specification of operator id
+            ngFlowchartService.createOperator = function (operatorId, operator, top, left) {
+                if (operator === undefined) return;
+                if (top === undefined) top = localOptions.defaultNewTop;
+                if (left === undefined) left = localOptions.defaultNewLeft;
+
+                var operatorData = {
+                    top: top,
+                    left: left,
+                    properties: operator
+                };
+
+                $flowchart.flowchart('createOperator', operatorId, operatorData)
+            };
+
+            // Adds the operator to the flowchart at the designated top/left values or default if not provided
             ngFlowchartService.addOperator = function (operator, top, left) {
                 if (operator === undefined) return;
                 if (top === undefined) top = localOptions.defaultNewTop;
@@ -185,14 +207,26 @@ angular.module("ngFlowchart", [])
             };
             // Returns if an operator with the given id exists or not
             ngFlowchartService.doesOperatorExist = function (operatorId) {
-                $flowchart.flowchart('doesOperatorExists', operatorId);
+                return $flowchart.flowchart('doesOperatorExists', operatorId);
             };
-            // getOperatorData
-            // getConnectorPosition
+            // Returns the operator's data
+            ngFlowchartService.getOperatorData = function (operatorId) {
+                return $flowchart.flowchart('getOperatorData', operatorId);
+            };
+
+            // Returns the connector's position relative to the container
+            ngFlowchartService.getConnectorPosition = function (operatorId, connectorId) {
+                return $flowchart.flowchart('getConnectorPosition', operatorId, connectorId);
+            };
+
             // getOperatorCompleteData
 
             // Gets the operator's DOM element.. does not add to container, can be used for preivews or drag & drop
-            //ngFlowchartService.getOperatorElement = function ()
+            ngFlowchartService.getOperatorElement = function (operatorData) {
+                // TODO feels like a weird way to do this but this is how jquery.flowchart defines the method
+                // ... maybe should be using operatorId instead of data?.. "overload"?
+                return $flowchart.flowchart('getOperatorElement', operatorData);
+            };
 
             // getOperatorFullProperties
 
@@ -213,8 +247,46 @@ angular.module("ngFlowchart", [])
 
 
             // LINK FUNCTIONS
+            //createLink
+            //addLink
+            // Deletes a link with the given id
+            ngFlowchartService.deleteLink = function (linkId) {
+                $flowchart.flowchart('deleteLink', linkId);
+            };
+            // Selects a link with the given id
+            ngFlowchartService.selectLink = function (linkId) {
+                $flowchart.flowchart('selectLink', linkId);
+            };
+            // Sets the color for a link
+            ngFlowchartService.setLinkMainColor = function (linkId, color) {
+                $flowchart.flowchart('setLinkMainColor', linkId, color);
+            };
+            // Gets the color for a link
+            ngFlowchartService.getLinkMainColor = function (linkId) {
+                $flowchart.flowchart('getLinkMainColor', linkId);
+            };
+            // Sets a temporary color contrary to setLinkMainColor... used for temporary highlighting like when selected
+            ngFlowchartService.colorizeLink = function (linkId, color) {
+                $flowchart.flowchart('colorizeLink', linkId, color);
+            };
+            // Sets a link back to its main color
+            ngFlowchartService.uncolorizeLink = function (linkId) {
+                $flowchart.flowchart('uncolorizeLink', linkId);
+            };
+            // Redraws all the links
+            ngFlowchartService.redrawLinksLayer = function () {
+                $flowchart.flowchart('redrawLinksLayer');
+            };
 
             // SELECTED LINK FUNCTIONS
+            // Gets the id of the link that's selected otherwise null
+            ngFlowchartService.getSelectedLinkId = function () {
+                return $flowchart.flowchart('getSelectedLinkId');
+            };
+            // Unselects link if one is selected
+            ngFlowchartService.unselectLink = function () {
+                return $flowchart.flowchart('unselectLink');
+            };
 
             // MISC DATA FUNCTIONS
 
@@ -224,6 +296,18 @@ angular.module("ngFlowchart", [])
 
             ngFlowchartService.setData = function (data) {
                 $flowchart.flowchart('setData', data);
+            };
+
+            ngFlowchartService.setPositionRatio = function (positionRatio) {
+                $flowchart.flowchart('setPositionRatio', positionRatio);
+            };
+
+            ngFlowchartService.getPositionRatio = function () {
+                $flowchart.flowchart('getPositionRatio');
+            };
+            // Deletes whatever is selected, link or operator
+            ngFlowchartService.deleteSelected = function () {
+                $flowchart.flowchart('deleteSelected');
             };
 
             // Return the service to be injected

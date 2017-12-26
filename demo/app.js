@@ -1,4 +1,4 @@
-﻿angular.module('app', ['ngFlowchart', 'ngAnimate', 'ngAria', 'ngMaterial'
+﻿fangular.module('app', ['ngFlowchart', 'ngAnimate', 'ngAria', 'ngMaterial'
 ]).config(['ngFlowchartServiceProvider', function (ngFlowchartServiceProvider) {
     ngFlowchartServiceProvider
         .setMultipleLinksOnOutput(true)
@@ -35,7 +35,9 @@
             return {
                 inputs: value.inputs,
                 outputs: value.outputs,
-                title: value.title
+                title: value.title,
+                class: value.class,
+                uncontained: value.uncontained
             }
         }
         return value;
